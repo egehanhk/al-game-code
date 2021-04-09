@@ -11,6 +11,9 @@ const to_download = [
     "https://adventure.land/js/keyboard.js",
     "https://adventure.land/js/payments.js",
     "https://adventure.land/data.js",
+    "https://adventure.land/js/runner_functions.js",
+    "https://adventure.land/js/runner_compat.js",
+    "https://adventure.land/index.html"
 ];
 download_all(to_download);
 
