@@ -2343,6 +2343,25 @@ function init_socket(args)
 					sender.a_direction=sender.direction=data.direction;
 				}
 			}
+			else if(data.type=="mining_fail")
+			{
+				var sender=get_player(data.name);
+				if(sender) v_shake_i2(sender);
+				if(sender.me) add_log("Failed to mine","gray");
+			}
+			else if(data.type=="mining_none")
+			{
+				add_log("Didn't mine anything","gray");
+			}
+			else if(data.type=="mining_start")
+			{
+				var sender=get_player(data.name);
+				if(sender)
+				{
+					v_shake_minor(sender);
+					sender.a_direction=sender.direction=data.direction;
+				}
+			}
 			else if(data.type=="poison_resist")
 			{
 				var target=get_entity(data.id);
@@ -4226,6 +4245,7 @@ function effects_logic(sprite)
 	}
 
 	if(sprite.c && sprite.c.fishing && !sprite.fx.attack) sprite.fx.attack=[new Date(),0];
+	if(sprite.c && sprite.c.mining && !sprite.fx.attack) sprite.fx.attack=[new Date(),0];
 }
 
 // .cx={head:"",hair:"",hat:"",body:"",face:"",upper:"", special:"",back:"",tail:"", stone:""}

@@ -38,16 +38,16 @@
 			<script src="/js/codemirror/5.40.2/xml.js"></script>
 			<!--<script src="/js/codemirror/5.40.2/addons/javascript-lint.js"></script>-->
 		
-		<script src="/js/common_functions.js?v=657"></script>
-		<script src="/js/functions.js?v=657"></script>
-		<script src="/js/game.js?v=657"></script>
-		<script src="/js/html.js?v=657"></script>
-		<script src="/js/payments.js?v=657"></script>
-		<script src="/js/keyboard.js?v=657"></script>
-		<script src="/data.js?v=657"></script>
+		<script src="/js/common_functions.js?v=658"></script>
+		<script src="/js/functions.js?v=658"></script>
+		<script src="/js/game.js?v=658"></script>
+		<script src="/js/html.js?v=658"></script>
+		<script src="/js/payments.js?v=658"></script>
+		<script src="/js/keyboard.js?v=658"></script>
+		<script src="/data.js?v=658"></script>
 		
-		 <link href="/css/index.css?v=657" rel="stylesheet" type="text/css"/> 
-		<link href="/css/common.css?v=657" rel="stylesheet" type="text/css"/>
+		 <link href="/css/index.css?v=658" rel="stylesheet" type="text/css"/> 
+		<link href="/css/common.css?v=658" rel="stylesheet" type="text/css"/>
 		<script>
 	var inside="login";
 	var user_id="",user_auth="";
@@ -68,7 +68,7 @@
 	var is_electron='',electron_data={};
 	var is_comm=false;
 	var no_eval=false;
-	var VERSION='657';
+	var VERSION='658';
 	var platform='web';
 	var engine_mode='';
 	var no_graphics='';
@@ -83,7 +83,7 @@
 	var auto_reload="auto",reload_times='0',character_to_load='',mstand_to_load=null;
 	// It's pretty complicated but there are 2 persistence, auto login routines, the above one is the first, the below one is the second, second one uses the URL data
 	var url_ip='',url_port='',url_character='';
-	var update_notes=['Last Update [March 27th]', 'New Feature: Emotions!', "Fishing Rod is now craftable, doesn't break yet", 'Mobbing damage is now capped at +20% or 300 damage, whichever is higher'];
+	var update_notes=['Last Update [April 14th]', 'New Skill: Fishing!', '(Another very very early release)', 'Bugfixes'];
 	var server_regions={"US":"Americas","EU":"Europas","ASIA":"Eastlands"};
 	var X={};
 	function payment_logic(){};
@@ -239,7 +239,7 @@
   };
 })(jQuery);
 
-X.servers=[{"name": "I", "region": "EU", "players": 15, "key": "EUI", "port": 2053, "addr": "eu1.adventure.land"}, {"name": "II", "region": "EU", "players": 48, "key": "EUII", "port": 2083, "addr": "eu2.adventure.land"}, {"name": "PVP", "region": "EU", "players": 0, "key": "EUPVP", "port": 2087, "addr": "eupvp.adventure.land"}, {"name": "I", "region": "US", "players": 23, "key": "USI", "port": 2053, "addr": "us1.adventure.land"}, {"name": "II", "region": "US", "players": 18, "key": "USII", "port": 2083, "addr": "us2.adventure.land"}, {"name": "III", "region": "US", "players": 51, "key": "USIII", "port": 2053, "addr": "us3.adventure.land"}, {"name": "PVP", "region": "US", "players": 8, "key": "USPVP", "port": 2087, "addr": "uspvp.adventure.land"}, {"name": "I", "region": "ASIA", "players": 11, "key": "ASIAI", "port": 2053, "addr": "asia1.adventure.land"}];
+X.servers=[{"name": "I", "region": "EU", "players": 5, "key": "EUI", "port": 2053, "addr": "eu1.adventure.land"}, {"name": "II", "region": "EU", "players": 36, "key": "EUII", "port": 2083, "addr": "eu2.adventure.land"}, {"name": "PVP", "region": "EU", "players": 3, "key": "EUPVP", "port": 2087, "addr": "eupvp.adventure.land"}, {"name": "I", "region": "US", "players": 26, "key": "USI", "port": 2053, "addr": "us1.adventure.land"}, {"name": "II", "region": "US", "players": 18, "key": "USII", "port": 2083, "addr": "us2.adventure.land"}, {"name": "III", "region": "US", "players": 48, "key": "USIII", "port": 2053, "addr": "us3.adventure.land"}, {"name": "PVP", "region": "US", "players": 13, "key": "USPVP", "port": 2087, "addr": "uspvp.adventure.land"}, {"name": "I", "region": "ASIA", "players": 17, "key": "ASIAI", "port": 2053, "addr": "asia1.adventure.land"}];
 X.characters=[];
 X.tutorial={"step": 0, "completed": []};
 X.unread=0;
@@ -329,7 +329,7 @@ X.codes={}
 		
 	</div>
 </div>
-<div class="gamebutton menu" style="position: fixed; top: 0px; right: 80px; z-index: 201; text-align: center; border-color: green">174 Online!</div>
+<div class="gamebutton menu" style="position: fixed; top: 0px; right: 80px; z-index: 201; text-align: center; border-color: green">166 Online!</div>
 <div id="progressui" class="gamebutton menu loading" style="position: fixed; top: 0px; right: 0px; z-index: 201; width: 40px; text-align: center" onclick='loader_click();'>0%</div>
 <div id="topleftcorner" style="z-index: 201">
 	 <!-- <a class="gamebutton" href="/logs" target="_blank">Development Diary</a> -->
@@ -422,7 +422,7 @@ X.codes={}
 		<div class="gamebutton gamebutton-large mt15">Take Screenshots</div> <div class="mb5"></div>
 		<div class="gray"><span style="color: #F4F4F4">&gt;</span> Hardcore Mode is experimental, there is no long term progress saving yet, no leaderboards, so if you want to save your progress, show off your achievements, do take screenshots!</div>
 		<div class="gamebutton gamebutton-large mt15">Provide Feedback</div> <div class="mb5"></div>
-		<div class="gray"><span style="color: #F4F4F4">&gt;</span> Please send an email to <span style="color: #F4F4F4"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="a8c0cdc4c4c7e8c9ccdecdc6dcdddacd86c4c9c6cc">[email&#160;protected]</a></span> about your experience in this new mode. I would like to hear about how you view Adventure Land, and whether this new Hardcore mode improves the game for you. When completed, the Hardcore mode will likely be a weekend-only thing. It will start on Friday, end on Sunday. I think there might be a lot of players who find loopholes etc. I've certainly improved some routines to prevent some scenarios. For example, depending on the feedback, I might add an NPC that tells where a certain player is for 10,000,000 gold etc., or, add 1-2 hours of peace time every 3-4 hours.</div>
+		<div class="gray"><span style="color: #F4F4F4">&gt;</span> Please send an email to <span style="color: #F4F4F4"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f39b969f9f9cb3929785969d87868196dd9f929d97">[email&#160;protected]</a></span> about your experience in this new mode. I would like to hear about how you view Adventure Land, and whether this new Hardcore mode improves the game for you. When completed, the Hardcore mode will likely be a weekend-only thing. It will start on Friday, end on Sunday. I think there might be a lot of players who find loopholes etc. I've certainly improved some routines to prevent some scenarios. For example, depending on the feedback, I might add an NPC that tells where a certain player is for 10,000,000 gold etc., or, add 1-2 hours of peace time every 3-4 hours.</div>
 	</div>
 </div>
 			<div id="boosterguide" style="display:none">
@@ -568,7 +568,7 @@ X.codes={}
 
 <p>I'm an indie developer doing my best to protect my players and meet their needs, but we live in a chaotic world, If you are a regular player reading this, please be careful, while I do everything to protect you and your data (especially more after everything I've experienced since I launched the game, which made me grow more as a developer and a human, at least I hope), nothing is safe on the Internet, always approach things with this fact in mind</p>
 
-<p>For any questions: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="caa2afa6a6a58aabaebcafa4bebfb8afe4a6aba4ae">[email&#160;protected]</a></p>
+<p>For any questions: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="9df5f8f1f1f2ddfcf9ebf8f3e9e8eff8b3f1fcf3f9">[email&#160;protected]</a></p>
 
 <p>Last Edit [04/12/18]</p></div>
 			<div id="opensource" style="display: none"><div id="opensourceinfo" style="display:none">
@@ -808,7 +808,7 @@ X.codes={}
 	
 
 	<div class="mt4 blockbutton" style="text-align: left">
-		Note: Feel free to email <span style="color: #36B2F8"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="ee868b828281ae8f8a988b809a9b9c8bc0828f808a">[email&#160;protected]</a></span> for anything, the game is in development, I love to receive emails and feedback
+		Note: Feel free to email <span style="color: #36B2F8"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="3058555c5c5f70515446555e444542551e5c515e54">[email&#160;protected]</a></span> for anything, the game is in development, I love to receive emails and feedback
 	</div>
 	<div class="mt4 blockbutton restartneeded hidden" style="text-align: left">
 		You need to refresh the game for changes to be effective.
@@ -1010,7 +1010,7 @@ X.codes={}
 		
 			<img src="https://adventure.land/images/tiles/items/skills_20v5.png" style='display:none' />
 		
-			<img src="https://adventure.land/images/tiles/items/custom.png?v=6" style='display:none' />
+			<img src="https://adventure.land/images/tiles/items/custom.png?v=7" style='display:none' />
 		
 			<img src="https://adventure.land/images/tiles/items/pack_20vt6.png" style='display:none' />
 		

@@ -844,7 +844,7 @@ function use_skill(name,target,arg)
 			return push_deferreds("skill",ids.length);
 		}
 	}
-	else if(in_arr(name,["invis","partyheal","selfheal","darkblessing","agitate","cleave","stomp","charge","light","hardshell","track","warcry","mcourage","fishing","massproduction","massproductionpp","mshield","scare","alchemy","power","xpower"]))
+	else if(in_arr(name,["invis","partyheal","selfheal","darkblessing","agitate","cleave","stomp","charge","light","hardshell","track","warcry","mcourage","fishing","mining","massproduction","massproductionpp","mshield","scare","alchemy","power","xpower"]))
 		socket.emit("skill",{name:name});
 	else if(in_arr(name,["supershot","quickpunch","quickstab","taunt","curse","burst","4fingers","magiport","absorb","mluck","rspeed","charm","mentalburst","piercingshot","huntersmark","reflection","tangle","snowball"]))
 		socket.emit("skill",{name:name,id:target});
@@ -6379,7 +6379,7 @@ async function electron_code_sync_logic()
 	try{
 		if(!electron) electron=require('electron');
 		if(!path) path=require('path');
-		if(!fs) fs=require('fs-extra');
+		if(!fs) try{ fs=require('fs-extra'); }catch(e){ console.error("fs-extra import issue"); fs=require('fs'); };
 		ide_root=path.join(electron.remote.app.getPath('appData'), electron.remote.app.getName());
 		await fs.promises.access(ide_root+"/autosync"+user_id).catch(async function(){ await fs.promises.mkdir(ide_root+"/autosync"+user_id); });
 		ide_root=ide_root+"/autosync"+user_id;
@@ -6486,7 +6486,7 @@ function electron_reset()
 {
 	if(!electron) electron=require('electron');
 	if(!path) path=require('path');
-	if(!fs) fs=require('fs-extra');
+	if(!fs) try{ fs=require('fs-extra'); }catch(e){ console.error("fs-extra import issue"); fs=require('fs'); };
 	getAppPath = path.join(electron.remote.app.getPath('appData'), electron.remote.app.getName());
 	fs.unlink(getAppPath, function(){
 		alert("App data cleared");
