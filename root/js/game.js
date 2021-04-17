@@ -833,13 +833,21 @@ function showhide_quirks_logic()
 {
 	if(!character) return;
 	var initial=quirks; quirks={};
-	$(".quirks").hide();
+	// $(".quirks").hide();
 	(G.maps[character.map].quirks||[]).forEach(function(q){
 		if(q[4]=="info" && point_distance(character.real_x,character.real_y,q[0],q[1])<200)
 		{
 			quirks[q[5]]=true;
 		}
-	})
+	});
+	(G.maps[character.map].zones||[]).forEach(function(zone){
+		[[0,-48,3],[-48,0,1],[48,0,2],[0,48,0],[0,-24,3],[-24,0,1],[24,0,2],[0,24,0]].forEach(function(m){
+			if(is_point_inside([character.real_x+m[0],character.real_y+m[1]],zone.polygon))
+			{
+				quirks[zone.type]=true;
+			}
+		});
+	});
 	if(JSON.stringify(initial) !== JSON.stringify(quirks))
 		render_server();
 }

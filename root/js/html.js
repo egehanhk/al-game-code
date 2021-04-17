@@ -250,6 +250,22 @@ function render_server()
 		html+="</div>";
 		content=true;
 	}
+	if(quirks.fishing)
+	{
+		html+=" <div class='gamebutton' style='padding: 6px 8px 6px 8px; font-size: 24px; line-height: 18px' onclick='pcs(event); open_guide(\"skill-fishing\",\"/docs/ref/skill-fishing\")'>";
+		html+="<div style='margin-top: -1px; margin-left: -3px; margin-right: -3px'>"+item_container({skin:G.items.rod.skin,bcolor:"black"})+"</div>";
+		html+="<div style='color:#CFD1D1; margin-top: 1px'>INFO</div>";
+		html+="</div>";
+		content=true;
+	}
+	if(quirks.mining)
+	{
+		html+=" <div class='gamebutton' style='padding: 6px 8px 6px 8px; font-size: 24px; line-height: 18px' onclick='pcs(event); open_guide(\"skill-mining\",\"/docs/ref/skill-mining\")'>";
+		html+="<div style='margin-top: -1px; margin-left: -3px; margin-right: -3px'>"+item_container({skin:G.items.pickaxe.skin,bcolor:"black"})+"</div>";
+		html+="<div style='color:#CFD1D1; margin-top: 1px'>INFO</div>";
+		html+="</div>";
+		content=true;
+	}
 	if(gameplay=="hardcore")
 	{
 		$(".rewardsbutton").css("display","inline-block");
