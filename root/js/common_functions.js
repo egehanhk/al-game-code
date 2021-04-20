@@ -390,7 +390,7 @@ function hardcore_logic()
 
 function can_stack(a,b,d)
 {
-	if(a && b && a.name && G.items[a.name].s && a.name==b.name && a.l==b.l && a.q+b.q+(d||0)<=(G.items[a.name].s===true&&9999||G.items[a.name].s) && (a.name!="cxjar" || a.data==b.data)) return true;
+	if(a && b && a.name && G.items[a.name].s && a.name==b.name && a.l==b.l && a.q+b.q+(d||0)<=(G.items[a.name].s===true&&9999||G.items[a.name].s) && (a.name!="cxjar" || a.data==b.data) && (a.name!="emotionjar" || a.data==b.data)) return true;
 	return false;
 }
 

@@ -1245,18 +1245,18 @@ function get(name)
 	}
 }
 
-function load_code(name,onerror)
+function load_code(name_or_slot,onerror)
 {
 	// load_code executes the code at top-level in a synchronized manner
 	// each function/variable becomes directly available
 	// onerror can be a function that will be executed if load_code fails
 
-	var code=parent.get_code_file(name); // works on Electron, returns the local file
+	var code=parent.get_code_file(name_or_slot); // works on Electron, returns the local file
 
 	if(code===null)
 	{
 		var xhrObj = new XMLHttpRequest();
-		xhrObj.open('GET',"/code.js?name="+encodeURIComponent(name)+"&timestamp="+(new Date().getTime()), false);
+		xhrObj.open('GET',"/code.js?name="+encodeURIComponent(name_or_slot)+"&timestamp="+(new Date().getTime()), false);
 		xhrObj.send('');
 		code=xhrObj.responseText;
 	}
@@ -1268,17 +1268,17 @@ function load_code(name,onerror)
 	document.getElementsByTagName("head")[0].appendChild(library);
 }
 
-function require_code(name)
+function require_code(name_or_slot)
 {
 	// require_code executes code inside it's own scope in a synchronized manner
 	// functions returns the exports dictionary, emulating a require
 
-	var code=parent.get_code_file(name);
+	var code=parent.get_code_file(name_or_slot);
 
 	if(code===null)
 	{
 		var xhrObj = new XMLHttpRequest();
-		xhrObj.open('GET',"/code.js?name="+encodeURIComponent(name)+"&xrequire=1&timestamp="+(new Date().getTime()), false);
+		xhrObj.open('GET',"/code.js?name="+encodeURIComponent(name_or_slot)+"&xrequire=1&timestamp="+(new Date().getTime()), false);
 		xhrObj.send('');
 		code=xhrObj.responseText;
 	}

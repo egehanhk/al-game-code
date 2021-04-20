@@ -1101,6 +1101,7 @@ function init_demo()
 	});
 }
 
+var first_welcome=false;
 function init_socket(args)
 {
 	if(!args) args={};
@@ -1148,6 +1149,11 @@ function init_socket(args)
 		server_name=server_names[data.region]+" "+data.name;
 		clear_game_logs(); add_log("Welcome to "+server_names[data.region]+" "+data.name);
 		add_update_notes();
+		if(!first_welcome)
+		{
+			first_welcome=true;
+			if(is_electron && electron_is_main() && user_id) setTimeout(electron_code_sync_logic,1);
+		}
 		current_map=data.map; current_in=data["in"]; first_coords=true; first_x=data.x; first_y=data.y; reflect_music();
 		M=G.maps[current_map].data;
 		GEO=G.geometry[current_map];
@@ -2197,6 +2203,10 @@ function init_socket(args)
 				if(player) map_animation(random_one(["egg0","egg1","egg2","egg3","egg4","egg5","egg6","egg7","egg8","goldenegg"]),{x:get_x(player),y:get_y(player)+1,target:{x:get_x(player),y:get_y(player)+5,height:0},item:true,fade:0.005,speed:0.01,limit:1,scale:0.5,filter:new PIXI.filters.OutlineFilter(0.5,hx("#ABA3BC"))});
 				if(player) v_shake_i(player);
 				setTimeout(function(){ sfx("drop_egg"); },30);
+			}
+			else if(player)
+			{
+				start_animation(player,emotion);
 			}
 		});
 	});

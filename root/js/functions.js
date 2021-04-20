@@ -5249,10 +5249,11 @@ function handle_information(infs)
 				// info.list={};
 				var ui_list=clone(info.list);
 				X.codes=info.list;
-				if(code_change)
-				{
-					html+="<div class='gamebutton block' style='margin-bottom: -4px'><span style='color: #E46A64'>[WARNING]</span> Unsaved Changes</div>";
-				}
+					if(code_change)
+					{
+						html+="<div class='gamebutton block' style='margin-bottom: -4px'><span style='color: #E46A64'>[WARNING]</span> Unsaved Changes</div>";
+					}
+					html+='<div class="gamebutton block" style="display: block; margin-bottom: -4px" onclick="open_guide(\'8-code-slots-and-files\',\'/docs/guide/code/8-code-slots-and-files\')"><span style="color: #6FD23F">[Documentation]</span> Code Slots and Files</div>';
 					html+="<div class='gamebutton block' style='margin-bottom: -4px' onclick='load_base_code()'><span style='color: gray'>[Default]</span> Load Base Code</div>";
 					if(character)
 					{
@@ -5295,6 +5296,7 @@ function handle_information(infs)
 					if(!Object.keys(ui_list).length) ui_list={"1":["Empty",0],"2":["Empty",0]};
 					if(character && !ui_list[real_id]) ui_list[real_id]=[character.name,0];
 					ui_list["#"]=["DELETE",0];
+					html+='<div class="gamebutton block" style="display: block; margin-bottom: -4px" onclick="open_guide(\'8-code-slots-and-files\',\'/docs/guide/code/8-code-slots-and-files\')"><span style="color: #6FD23F">[Documentation]</span> Code Slots and Files</div>';
 					for(var num in ui_list)
 					{
 						if(parseInt(num)>100) color="#975CAD";
@@ -6395,12 +6397,17 @@ async function electron_code_sync_logic()
 			{
 				var fname=files[i];
 				var cdata=filename_to_cdata(fname);
-				if(cdata)
+				if(cdata && found[cdata.slot])
 				{
-					found[cdata.slot]=true;
+					add_log("You need to either delete "+found[cdata.slot]+" or "+fname+" when the game client is closed!","#A88690");
+				}
+				else if(cdata)
+				{
+					found[cdata.slot]=fname;
 					await process_file(ide_root+"/adventureland/characters",cdata);
 				}
-				else add_log("Invalid filename: "+fname,"#A88690");
+				else if(fname && fname[0]!=".")
+					add_log("Invalid filename: "+fname,"#A88690");
 			}
 		}).catch((e)=>{
 			add_log("/adventureland/codes: "+e,"red");
@@ -6410,12 +6417,17 @@ async function electron_code_sync_logic()
 			{
 				var fname=files[i];
 				var cdata=filename_to_cdata(fname);
-				if(cdata)
+				if(cdata && found[cdata.slot])
 				{
-					found[cdata.slot]=true;
+					add_log("You need to either delete "+found[cdata.slot]+" or "+fname+" when the game client is closed!","#A88690");
+				}
+				else if(cdata)
+				{
+					found[cdata.slot]=fname;
 					await process_file(ide_root+"/adventureland/codes",cdata);
 				}
-				else add_log("Invalid filename: "+fname,"#A88690");
+				else if(fname && fname[0]!=".")
+					add_log("Invalid filename: "+fname,"#A88690");
 			}
 		}).catch((e)=>{
 			add_log("/adventureland/codes: "+e,"red");
