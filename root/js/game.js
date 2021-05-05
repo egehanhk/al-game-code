@@ -3802,6 +3802,7 @@ function update_sprite(sprite)
 	if(sprite.real_alpha!==undefined) alpha_logic(sprite);
 
 	update_filters(sprite);
+	if(sprite.texts) step_d_texts(sprite);
 
 	sprite.updates+=1; //round(frame_ms/15);
 }
@@ -3958,7 +3959,8 @@ function start_filter(sprite,ftype,args)
 
 	if(ftype=="curse")
 	{
-		if(sprite.s && sprite.s.frozen) filter.hue(24);
+		if(sprite.s && sprite.s.deepfreezed) filter.hue(36);
+		else if(sprite.s && sprite.s.frozen) filter.hue(24);
 		else if(sprite.s && sprite.s.poisoned) filter.hue(-24);
 		else filter.hue(20);
 	}
@@ -4148,13 +4150,13 @@ function player_effects_logic(sprite)
 function effects_logic(sprite)
 {
 	if(no_graphics || !sprite.s) return;
-	if((sprite.s.cursed || sprite.s.poisoned || sprite.s.frozen) && !sprite.fx.cursed)
+	if((sprite.s.cursed || sprite.s.poisoned || sprite.s.frozen || sprite.s.deepfreezed) && !sprite.fx.cursed)
 	{
 		sprite.fx.cursed=true;
 		start_filter(sprite,"curse");
 		// start_animation(sprite,"cursed")
 	}
-	else if(!(sprite.s.cursed || sprite.s.poisoned || sprite.s.frozen) && sprite.fx.cursed)
+	else if(!(sprite.s.cursed || sprite.s.poisoned || sprite.s.frozen || sprite.s.deepfreezed) && sprite.fx.cursed)
 	{
 		delete sprite.fx.cursed;
 		stop_filter(sprite,"curse");
@@ -4990,14 +4992,14 @@ function add_door(door)
 				for(var p in party)
 				{
 					var c=party[p];
-					if(c['map']=="crypt")
+					if(c['map']==door[4])
 					{
-						socket.emit('enter',{place:"crypt",name:c["in"]});
+						socket.emit('enter',{place:door[4],name:c["in"]});
 						return;
 					}
 				}
 			}
-			setTimeout(function(){ show_confirm("Enter "+G.maps[door[4]].name+"? [Consumes a key!]",["#D06631","Yes"],"No!",function(){ socket.emit('enter',{place:"crypt"}); hide_modal(true); }); },10);
+			setTimeout(function(){ show_confirm("Enter "+G.maps[door[4]].name+"? [Consumes a key!]",["#D06631","Yes"],"No!",function(){ socket.emit('enter',{place:door[4]}); hide_modal(true); }); },10);
 			return;
 		}
 		if(!is_door_close(character.map,door,character.real_x,character.real_y) || !can_use_door(character.map,door,character.real_x,character.real_y)) {add_log("Get closer","gray"); return;}

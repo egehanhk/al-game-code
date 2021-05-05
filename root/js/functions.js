@@ -846,7 +846,7 @@ function use_skill(name,target,arg)
 	}
 	else if(in_arr(name,["invis","partyheal","selfheal","darkblessing","agitate","cleave","stomp","charge","light","hardshell","track","warcry","mcourage","fishing","mining","massproduction","massproductionpp","mshield","scare","alchemy","power","xpower"]))
 		socket.emit("skill",{name:name});
-	else if(in_arr(name,["supershot","quickpunch","quickstab","taunt","curse","burst","4fingers","magiport","absorb","mluck","rspeed","charm","mentalburst","piercingshot","huntersmark","reflection","tangle","snowball"]))
+	else if(in_arr(name,["supershot","quickpunch","quickstab","taunt","curse","burst","4fingers","magiport","absorb","mluck","rspeed","charm","mentalburst","piercingshot","huntersmark","reflection","tangle","snowball","zap"]))
 		socket.emit("skill",{name:name,id:target});
 	else if(name=="pcoat")
 	{
@@ -4979,12 +4979,114 @@ function d_line(start,end,args)
 	draw_timeout(disappear_line(0,e),20);
 }
 
+function step_d_texts(entity,add)
+{
+	var to_remove=[];
+	for(var i=0;i<entity.texts.length;i++)
+	{
+		var text=entity.texts[i];
+		var ms=mssince(text.last_fade),y=round(4*ms/text.anim_time)+(add||0);
+			// console.log(y);
+		if(2<y && y<7) y=4;
+		text.y-=text.disp_m*y; // Originally just "-=y" [03/12/17] // removed parseInt() [29/06/18]
+		text.alpha=max(0,text.alpha-(0.142*ms/text.anim_time));
+		text.last_fade=new Date();
+		if(text.alpha>0.25);
+		else
+		{
+			remove_sprite(text);
+			try{ text.destroy({texture:true,baseTexture:true}); }catch(e){console.log(e);} // dirty fix: [20/08/16] #PIXI
+			to_remove.push(i);
+		}
+	}
+	for(var i=to_remove.length-1;i>=0;i--)
+	{
+		entity.texts.splice(to_remove[i],1);
+	}
+}
+
+function shift_d_texts(entity,add)
+{
+	for(var i=0;i<entity.texts.length;i++)
+	{
+		var text=entity.texts[i];
+		text.y-=add||0;
+		if(entity.texts[i+1] && text.y-entity.texts[i+1].y<10)
+			add=10-(text.y-entity.texts[i+1].y);
+		else
+			break;
+	}
+}
+
+function d_text_new(message,entity,args)
+{
+	var x=0,y=-get_height(entity);
+	if(entity.name_tag || entity.hp_bar) y-=12;
+	if(mode.dom_tests_pixi || no_graphics || paused) return;
+	if(!args) args={};
+	var color=args.color||"#4C4C4C",fx=null; // "#383537" before text_quality = 2 as default [16/08/16]
+	if(color=="hp") color="green";
+	else if(color=="mp") color="#317188"; // previously "#006AA9"
+	else if(color=="damage") color="#C80000"; // previously "red"
+	else if(color=="+gold") color="gold";
+	else if(color=="stun") color="#FF9601",y-=6;
+	else if(color=="sugar") color="#D64770";
+	else if(color=="freeze") color="#53C1FF",y-=6;
+	else if(color=="burn") color="#FD9644",y-=6;
+	else if(color=="crit") color="#D32D51",y-=6;
+	else if(color=="sneak") color="#2D9B41",y-=6;
+	else if(color=="mana") color=colors.mp;
+	else if(color=="elixir") color="#E06A63";
+	else if(color=="evade") color="#808B94";
+	else if(color=="reflect") color="#6D62A2";
+	else if(color=="supershot") color="#9B172E",y-=6;
+	else if(color=="quickpunch") color="#41338B",y-=6;
+	else if(color=="mentalburst") color="#4C9AE0",y-=6;
+	else if(color=="burst") color="#2A8A9A",size="large";
+	else if(color=="poison") color=colors.poison,size="large",y-=6;
+	else if(color=="1mxp") color="#FFFFFF",fx="glow";
+	else if(colors[color]) color=colors[color];
+	var size=SZ[args.size]||args.size||SZ.normal;
+	// console.log(size);
+	var animate=!args.dont_animate;
+	var offset=0;
+	var text=new PIXI.Text(message,{fontFamily:SZ.font,fontSize:size*text_quality,fontWeight:"bold",fill:color,align:"center",dropShadow:true,dropShadowColor:"#909090",dropShadowDistance:1,dropShadowAngle:Math.PI/2}); //,fontWeight:"bold"
+	//,dropShadow:true,dropShadowColor:"#B0B0B0",dropShadowDistance:1,dropShadowAngle:-Math.PI/2
+	text.parentGroup=text.displayGroup=text_layer;
+	
+	text.disp_m=SZ.normal/18.0;
+	if(size>SZ.normal) text.disp_m=(SZ.normal+1)/18.0;
+	text.anim_time=max(75,parseInt(100*18.0/size)); // Originally just 100 [03/12/17]
+	text.type='text';
+	text.alpha=1; text.last_fade=new Date();
+	text.anchor.set(0.5,1);
+	if(fx) start_filter(text,fx);
+	if(text_quality>1) text.scale=new PIXI.Point((entity.mscale||1)/text_quality,(entity.mscale||1)/text_quality);
+
+	//twidth=text.width,offset=0;
+	//if(round(twidth)!=twidth) offset=0.5;
+
+	text.x=round(x);
+	text.y=round(y)+offset;
+	if(args.y) text.y-=args.y;
+	
+	entity.addChild(text);
+	
+	entity.texts=entity.texts||[];
+	if(entity.texts.length && text.y-entity.texts[0].y<10)
+		shift_d_texts(entity,10-(text.y-entity.texts[0].y));
+	entity.texts.splice(0,0,text);
+
+	if(args.s) sfx(args.s,text.x,text.y);
+}
+
 function d_text(message,x,y,args)
 {
 	var sprite=null;
 	if(mode.dom_tests_pixi || no_graphics || paused) return;
 	if(is_object(x))
 	{
+		if(x.type && mode.use_new_d_texts) return d_text_new(message,x,y);
 		sprite=x; args=y;
 		x=get_x(sprite);
 		y=get_y(sprite)-(sprite.aheight||sprite.height)-(sprite.hp_bar&&15||2);
@@ -5760,7 +5862,7 @@ function reflect_music()
 	if(current_map=="desertland") the_music=sounds.rpg07;
 	if(current_map=="winterland" || xmas_tunes) the_music=sounds.christmas;
 	if(current_map=="bank") the_music=sounds.casual05;
-	if(current_map=="crypt") the_music=sounds.horror02;
+	if(current_map=="crypt" || current_map=="winter_instance") the_music=sounds.horror02;
 	if(current_music!=the_music && the_music)
 	{
 		if(current_music) current_music.stop();

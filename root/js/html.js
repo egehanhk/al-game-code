@@ -250,6 +250,14 @@ function render_server()
 		html+="</div>";
 		content=true;
 	}
+	if(quirks.darkmage)
+	{
+		html+=" <div class='gamebutton' style='padding: 6px 8px 6px 8px; font-size: 24px; line-height: 18px' onclick='pcs(event); open_guide(\"dungeon-darkmage\",\"/docs/ref/dungeon-darkmage\")'>";
+		html+="<div style='margin-top: -1px; margin-left: -3px; margin-right: -3px'>"+item_container({skin:G.items.frozenkey.skin,bcolor:"black"})+"</div>";
+		html+="<div style='color:#CFD1D1; margin-top: 1px'>INFO</div>";
+		html+="</div>";
+		content=true;
+	}
 	if(quirks.fishing)
 	{
 		html+=" <div class='gamebutton' style='padding: 6px 8px 6px 8px; font-size: 24px; line-height: 18px' onclick='pcs(event); open_guide(\"skill-fishing\",\"/docs/ref/skill-fishing\")'>";
@@ -2553,7 +2561,7 @@ function render_all_monsters()
 	var html="";
 	html+="<div style='width: 480px'>";
 	object_sort(G.monsters,"hpsort").forEach(function(e){
-		if((e[1].stationary || e[1].cute) && !e[1].achievements) return;
+		if((e[1].stationary || e[1].cute) && !e[1].achievements || e[1].hide) return;
 		html+="<div style='background-color:#575983; border: 2px solid #9F9FB0; position: relative; display: inline-block; margin: 2px; /*"+e[0]+"*/' class='clickable' onclick='pcs(event); render_monster_info(\""+e[0]+"\")'>";
 		if((G.monsters[e[0]].size||1)<1) html+=sprite(e[1].skin||e[0],{scale:1});
 		else html+=sprite(e[1].skin||e[0],{scale:1.5});

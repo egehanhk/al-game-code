@@ -645,7 +645,7 @@ function is_silenced(entity)
 
 function is_disabled(entity)
 {
-	if(!entity || entity.rip || (entity.s && (entity.s.stunned || entity.s.fingered || entity.s.stoned))) return true;
+	if(!entity || entity.rip || (entity.s && (entity.s.stunned || entity.s.fingered || entity.s.stoned || entity.s.deepfreezed))) return true;
 }
 
 function calculate_item_grade(def,item)
@@ -1941,11 +1941,19 @@ function future_ms(ms)
 	c.setMilliseconds(c.getMilliseconds()+ms);
 	return c;
 }
-function future_s(ms)
+function future_s(s)
 {
 	var c=new Date();
-	c.setSeconds(c.getSeconds()+ms);
+	c.setSeconds(c.getSeconds()+s);
 	return c;
+}
+function future_m(m)
+{
+	return future_s(60*m);
+}
+function future_h(h)
+{
+	return future_m(60*h);
 }
 
 function mssince(t,ref)
